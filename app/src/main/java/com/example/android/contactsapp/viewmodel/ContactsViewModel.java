@@ -12,15 +12,18 @@ import com.example.android.contactsapp.service.ContactsService;
 import com.example.android.contactsapp.service.RemoteRepository;
 import com.example.android.contactsapp.service.model.ContactListModel;
 
-public class ContactsViewModel extends ViewModel {
+public class ContactsViewModel extends AndroidViewModel {
 
-    private RemoteRepository remoteRepository;
+    private LiveData<ContactListModel> contactListModel;
 
-    public ContactsViewModel(ContactsService contactsService){
-        remoteRepository = new RemoteRepository(contactsService);
+
+    public ContactsViewModel(Application application){
+        super(application);
+        contactListModel = RemoteRepository.getInstance().getContactsListModel();
+
     }
 
     public LiveData<ContactListModel> getContactList(){
-        return remoteRepository.getContactsListModel();
+       return contactListModel;
     }
 }
