@@ -30,4 +30,13 @@ public class ContactsModel {
     @SerializedName("phone")
     private HashMap<String,String> phone = new HashMap<String,String>();
 
+    @SerializedName("mobile")
+    private String mobile;
+
+    @SerializedName("home")
+    private String home;
+
+    @SerializedName("office")
+    private String office;
+
 }

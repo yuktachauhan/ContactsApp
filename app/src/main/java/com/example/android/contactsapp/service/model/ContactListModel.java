@@ -17,4 +17,5 @@ public class ContactListModel {
     @SerializedName("contacts")
     private List<ContactsModel> contactsModelList = new ArrayList<ContactsModel>();
 
+
 }

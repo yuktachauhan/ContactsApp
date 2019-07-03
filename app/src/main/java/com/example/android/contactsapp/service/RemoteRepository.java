@@ -5,7 +5,10 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.widget.Toast;
 
-import com.example.android.contactsapp.service.model.ContactListModel;
+import com.example.android.contactsapp.service.model.ContactsModel;
+
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,18 +36,18 @@ public class RemoteRepository {
         }
         return remoteRepository;
     }
-    public LiveData<ContactListModel> getContactsListModel(){
+    public LiveData<List<ContactsModel>> getContactsListModel(){
 
-        final MutableLiveData<ContactListModel> contacts =new MutableLiveData<>();
-        contactsService.getContactList().enqueue(new Callback<ContactListModel>() {
+        final MutableLiveData<List<ContactsModel>> contacts =new MutableLiveData<>();
+        contactsService.getContactList().enqueue(new Callback<List<ContactsModel>>() {
             @Override
-            public void onResponse(Call<ContactListModel> call, Response<ContactListModel> response) {
+            public void onResponse(Call<List<ContactsModel>> call, Response<List<ContactsModel>> response) {
                 Toast.makeText(application,"Response is successful",Toast.LENGTH_LONG).show();
                   contacts.setValue(response.body());
             }
 
             @Override
-            public void onFailure(Call<ContactListModel> call, Throwable t) {
+            public void onFailure(Call<List<ContactsModel>> call, Throwable t) {
                 Toast.makeText(application,t.getMessage(),Toast.LENGTH_LONG).show();
                 contacts.setValue(null);
             }

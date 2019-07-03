@@ -11,19 +11,22 @@ import android.support.annotation.NonNull;
 import com.example.android.contactsapp.service.ContactsService;
 import com.example.android.contactsapp.service.RemoteRepository;
 import com.example.android.contactsapp.service.model.ContactListModel;
+import com.example.android.contactsapp.service.model.ContactsModel;
+
+import java.util.List;
 
 public class ContactsViewModel extends AndroidViewModel {
 
-    private LiveData<ContactListModel> contactListModel;
+    private LiveData<List<ContactsModel>> contactList;
 
 
     public ContactsViewModel(Application application){
         super(application);
-        contactListModel = RemoteRepository.getInstance().getContactsListModel();
+        contactList = RemoteRepository.getInstance().getContactsListModel();
 
     }
 
-    public LiveData<ContactListModel> getContactList(){
-       return contactListModel;
+    public LiveData<List<ContactsModel>> getContactList(){
+       return contactList;
     }
 }
