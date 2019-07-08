@@ -17,16 +17,13 @@ import java.util.List;
 
 public class ContactsViewModel extends AndroidViewModel {
 
-    private LiveData<List<ContactsModel>> contactList;
-
+    private LiveData<ContactListModel> allContacts;
 
     public ContactsViewModel(Application application){
         super(application);
-        contactList = RemoteRepository.getInstance().getContactsListModel();
 
+        allContacts = RemoteRepository.getInstance().getContactList();
     }
 
-    public LiveData<List<ContactsModel>> getContactList(){
-       return contactList;
-    }
+    public LiveData<ContactListModel> getAllContacts(){return allContacts;};
 }

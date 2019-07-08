@@ -24,32 +24,33 @@ public class ContactsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ContactsAdapter contactsAdapter;
     private ContactsViewModel contactsViewModel;
+    private ContactListModel contactListModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         contactsViewModel =new ContactsViewModel(getApplication());
-        observerViewModel(contactsViewModel);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(contactsAdapter);
+        observeViewModel(contactsViewModel);
+
 
     }
 
-    public void observerViewModel(final ContactsViewModel contactsViewModel){
-        contactsViewModel.getContactList().observe(this, new Observer<List<ContactsModel>>() {
+
+    public void observeViewModel(final ContactsViewModel contactsViewModel){
+        contactsViewModel.getAllContacts().observe(this, new Observer<ContactListModel>() {
             @Override
-            public void onChanged(@Nullable List<ContactsModel> contactsModels) {
-                if(contactsModels!=null){
-                    contactsAdapter=new ContactsAdapter(contactsModels);
-                }
+            public void onChanged(@Nullable ContactListModel contactListModel) {
+                List<ContactsModel> contacts = contactListModel.getContactsModelList();
+                contactsAdapter = new ContactsAdapter(contacts);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(contactsAdapter);
+                contactsAdapter.notifyDataSetChanged();
             }
         });
-
     }
 
 }

@@ -9,11 +9,13 @@ import android.widget.TextView;
 import com.example.android.contactsapp.R;
 import com.example.android.contactsapp.service.model.ContactsModel;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder> {
 
     List<? extends ContactsModel> contacts;
+    private HashMap<String,String> phone;
 
     public class ContactsViewHolder extends RecyclerView.ViewHolder{
 
@@ -45,14 +47,15 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     @Override
     public void onBindViewHolder(ContactsViewHolder viewHolder,int index){
         ContactsModel contactsModel=contacts.get(index);
+        phone = contactsModel.getPhone();
         viewHolder.id.setText(contactsModel.getId());
         viewHolder.name.setText(contactsModel.getName());
         viewHolder.gender.setText(contactsModel.getGender());
         viewHolder.email.setText(contactsModel.getEmail());
         viewHolder.address.setText(contactsModel.getAddress());
-        viewHolder.mobile.setText(contactsModel.getMobile());
-        viewHolder.home.setText(contactsModel.getHome());
-        viewHolder.office.setText(contactsModel.getOffice());
+        viewHolder.mobile.setText(phone.get("mobile"));
+        viewHolder.home.setText(phone.get("home"));
+        viewHolder.office.setText(phone.get("office"));
     }
 
     @Override

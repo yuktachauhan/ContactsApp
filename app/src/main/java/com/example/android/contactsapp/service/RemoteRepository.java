@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.widget.Toast;
 
+import com.example.android.contactsapp.service.model.ContactListModel;
 import com.example.android.contactsapp.service.model.ContactsModel;
 
 
@@ -23,8 +24,7 @@ public class RemoteRepository {
     Application application;
 
 
-    public RemoteRepository(Application application){
-        this.application=application;
+    public RemoteRepository(){
         retrofit =apiClient.getClient();
         contactsService=retrofit.create(ContactsService.class);
 
@@ -32,26 +32,26 @@ public class RemoteRepository {
 
     public static synchronized RemoteRepository getInstance(){
         if(remoteRepository==null){
-            remoteRepository=new RemoteRepository(getInstance().application);
+            remoteRepository=new RemoteRepository();
         }
         return remoteRepository;
     }
-    public LiveData<List<ContactsModel>> getContactsListModel(){
 
-        final MutableLiveData<List<ContactsModel>> contacts =new MutableLiveData<>();
-        contactsService.getContactList().enqueue(new Callback<List<ContactsModel>>() {
+
+    public LiveData<ContactListModel> getContactList(){
+        final MutableLiveData<ContactListModel> allContacts = new MutableLiveData<>();
+        contactsService.getContacts().enqueue(new Callback<ContactListModel>() {
             @Override
-            public void onResponse(Call<List<ContactsModel>> call, Response<List<ContactsModel>> response) {
-                Toast.makeText(application,"Response is successful",Toast.LENGTH_LONG).show();
-                  contacts.setValue(response.body());
+            public void onResponse(Call<ContactListModel> call, Response<ContactListModel> response) {
+                allContacts.setValue(response.body());
             }
 
             @Override
-            public void onFailure(Call<List<ContactsModel>> call, Throwable t) {
+            public void onFailure(Call<ContactListModel> call, Throwable t) {
                 Toast.makeText(application,t.getMessage(),Toast.LENGTH_LONG).show();
-                contacts.setValue(null);
+                allContacts.setValue(null);
             }
         });
-     return contacts;
+        return allContacts;
     }
 }
