@@ -2,6 +2,7 @@ package com.example.android.contactsapp.view.ui;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,8 +35,19 @@ public class ContactsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        contactsViewModel =new ContactsViewModel(getApplication());
-        observeViewModel(contactsViewModel);
+        contactsViewModel = ViewModelProviders.of(this).get(ContactsViewModel.class);
+        contactsViewModel.loadFromDb().observe(this, new Observer<List<ContactEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<ContactEntity> contactEntities) {
+                contactsAdapter=new ContactsAdapter(contactEntities);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(contactsAdapter);
+                contactsAdapter.notifyDataSetChanged();
+            }
+        });
+        //observeViewModel(contactsViewModel);
     }
 
 
@@ -55,7 +67,7 @@ public class ContactsActivity extends AppCompatActivity {
         });
     }*/
 
-   public void observeViewModel(final ContactsViewModel contactsViewModel){
+   /*public void observeViewModel(final ContactsViewModel contactsViewModel){
        contactsViewModel.loadFromDb().observe(this, new Observer<List<ContactEntity>>() {
            @Override
            public void onChanged(@Nullable List<ContactEntity> contactEntities) {
@@ -69,6 +81,6 @@ public class ContactsActivity extends AppCompatActivity {
            }
        });
    }
-
+*/
 
 }
