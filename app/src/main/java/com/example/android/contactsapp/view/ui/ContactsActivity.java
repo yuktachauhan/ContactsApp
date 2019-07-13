@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.example.android.contactsapp.R;
+import com.example.android.contactsapp.local.ContactEntity;
 import com.example.android.contactsapp.service.model.ContactListModel;
 import com.example.android.contactsapp.service.model.ContactsModel;
 import com.example.android.contactsapp.view.adapter.ContactsAdapter;
@@ -25,6 +27,7 @@ public class ContactsActivity extends AppCompatActivity {
     private ContactsAdapter contactsAdapter;
     private ContactsViewModel contactsViewModel;
     private ContactListModel contactListModel;
+    private List<ContactEntity> contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,17 +36,16 @@ public class ContactsActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         contactsViewModel =new ContactsViewModel(getApplication());
         observeViewModel(contactsViewModel);
-
-
     }
 
 
-    public void observeViewModel(final ContactsViewModel contactsViewModel){
+   /* public void observeViewModel(final ContactsViewModel contactsViewModel){
         contactsViewModel.getAllContacts().observe(this, new Observer<ContactListModel>() {
             @Override
             public void onChanged(@Nullable ContactListModel contactListModel) {
-                List<ContactsModel> contacts = contactListModel.getContactsModelList();
-                contactsAdapter = new ContactsAdapter(contacts);
+
+                contact=contactListModel.getContactsModelList();
+                contactsAdapter = new ContactsAdapter(contact);
                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -51,6 +53,22 @@ public class ContactsActivity extends AppCompatActivity {
                 contactsAdapter.notifyDataSetChanged();
             }
         });
-    }
+    }*/
+
+   public void observeViewModel(final ContactsViewModel contactsViewModel){
+       contactsViewModel.loadFromDb().observe(this, new Observer<List<ContactEntity>>() {
+           @Override
+           public void onChanged(@Nullable List<ContactEntity> contactEntities) {
+               Log.i("Response contacts",contactEntities.toString());
+               contactsAdapter=new ContactsAdapter(contactEntities);
+               RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+               recyclerView.setLayoutManager(mLayoutManager);
+               recyclerView.setItemAnimator(new DefaultItemAnimator());
+               recyclerView.setAdapter(contactsAdapter);
+               contactsAdapter.notifyDataSetChanged();
+           }
+       });
+   }
+
 
 }

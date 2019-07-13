@@ -1,5 +1,6 @@
 package com.example.android.contactsapp.service.model;
 
+import com.example.android.contactsapp.local.ContactEntity;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class ContactListModel {
 
     @SerializedName("contacts")
-    private List<ContactsModel> contactsModelList = new ArrayList<ContactsModel>();
+    private List<ContactEntity> contactsModelList;
 
 
 }

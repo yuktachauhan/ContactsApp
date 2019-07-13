@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.contactsapp.R;
+import com.example.android.contactsapp.local.ContactEntity;
 import com.example.android.contactsapp.service.model.ContactsModel;
 
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder> {
 
-    List<? extends ContactsModel> contacts;
+    List<? extends ContactEntity> contacts;
     private HashMap<String,String> phone;
 
     public class ContactsViewHolder extends RecyclerView.ViewHolder{
@@ -34,7 +35,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         }
     }
 
-    public ContactsAdapter(List<ContactsModel> list){
+    public ContactsAdapter(List<ContactEntity> list){
         this.contacts=list;
     }
 
@@ -46,7 +47,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
     @Override
     public void onBindViewHolder(ContactsViewHolder viewHolder,int index){
-        ContactsModel contactsModel=contacts.get(index);
+       ContactEntity contactsModel =contacts.get(index);
         phone = contactsModel.getPhone();
         viewHolder.id.setText(contactsModel.getId());
         viewHolder.name.setText(contactsModel.getName());

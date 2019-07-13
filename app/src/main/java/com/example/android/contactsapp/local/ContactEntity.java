@@ -1,5 +1,6 @@
-package com.example.android.contactsapp.service.model;
+package com.example.android.contactsapp.local;
 
+import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
@@ -9,14 +10,20 @@ import java.util.HashMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import android.support.annotation.NonNull;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class ContactsModel {
+@AllArgsConstructor
+
+@Entity(tableName = "contacts")
+
+public class ContactEntity {
+
 
     @PrimaryKey
     @SerializedName("id")
+    @NonNull
     private String id;
 
     @SerializedName("name")
@@ -33,5 +40,4 @@ public class ContactsModel {
 
     @SerializedName("phone")
     private HashMap<String,String> phone = new HashMap<String,String>();
-
 }

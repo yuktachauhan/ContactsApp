@@ -2,28 +2,36 @@ package com.example.android.contactsapp.viewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
 
-import com.example.android.contactsapp.service.ContactsService;
-import com.example.android.contactsapp.service.RemoteRepository;
+import com.example.android.contactsapp.local.ContactEntity;
+import com.example.android.contactsapp.service.ContactRepository;
 import com.example.android.contactsapp.service.model.ContactListModel;
-import com.example.android.contactsapp.service.model.ContactsModel;
 
 import java.util.List;
 
 public class ContactsViewModel extends AndroidViewModel {
 
+    private ContactRepository contactRepository;
     private LiveData<ContactListModel> allContacts;
+    private LiveData<List<ContactEntity>> contact;
 
     public ContactsViewModel(Application application){
         super(application);
 
-        allContacts = RemoteRepository.getInstance().getContactList();
+        contactRepository=ContactRepository.getInstance();
+        //allContacts = contactRepository.getContactList();
+
     }
 
-    public LiveData<ContactListModel> getAllContacts(){return allContacts;};
+   // public LiveData<ContactListModel> getAllContacts(){return allContacts;};
+
+   /* public void saveToDb(LiveData<List<ContactEntity>> contact){
+          contactRepository.saveToDb(contact);
+    }*/
+
+    public LiveData<List<ContactEntity>> loadFromDb(){
+        return contactRepository.getFromDb();
+    }
+
 }
